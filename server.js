@@ -1,17 +1,30 @@
 const express = require('express');
 const path = require('path');
-const session = require('express-session');
+const multer = require('multer'); // Nueva herramienta para fotos
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// --- 1. CONFIGURACIÓN ---
+// Configurar dónde se guardan las fotos
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => { cb(null, 'public/uploads/'); },
+    filename: (req, file, cb) => { cb(null, Date.now() + '-' + file.originalname); }
+});
+const upload = multer({ storage: storage });
+
 app.use(express.static(path.join(__dirname, '/')));
+app.use('/public', express.static('public')); // Para que las fotos sean visibles
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-    secret: 'clave-secreta',
-    resave: false,
-    saveUninitialized: true
-}));
+
+// RUTA PARA SUBIR LA IMAGEN
+app.post('/subir-personaje', upload.single('foto'), (req, res) => {
+    if (!req.file) return res.send("Error al subir archivo");
+    res.send(`<h1>✅ ¡Imagen subida!</h1><p>Se guardó como: ${req.file.filename}</p><a href="/personajes">Volver</a>`);
+});
+
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/personajes', (req, res) => res.sendFile(path.join(__dirname, 'personajes.html')));
+
+app.listen(PORT, () => console.log(`🚀 Servidor con subida de fotos listo`));
 
 let usuarios = [];
 
