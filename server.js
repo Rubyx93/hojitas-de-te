@@ -1,67 +1,47 @@
 const express = require('express');
 const path = require('path');
-const multer = require('multer'); // Nueva herramienta para fotos
+const session = require('express-session');
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configurar dónde se guardan las fotos
+// Crear carpeta de subidas si no existe
+const uploadDir = './public/uploads/';
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configuración de Multer para guardar fotos
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => { cb(null, 'public/uploads/'); },
+    destination: (req, file, cb) => { cb(null, uploadDir); },
     filename: (req, file, cb) => { cb(null, Date.now() + '-' + file.originalname); }
 });
 const upload = multer({ storage: storage });
 
 app.use(express.static(path.join(__dirname, '/')));
-app.use('/public', express.static('public')); // Para que las fotos sean visibles
+app.use('/public', express.static('public')); 
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    secret: 'clave-secreta',
+    resave: false,
+    saveUninitialized: true
+}));
 
-// RUTA PARA SUBIR LA IMAGEN
-app.post('/subir-personaje', upload.single('foto'), (req, res) => {
-    if (!req.file) return res.send("Error al subir archivo");
-    res.send(`<h1>✅ ¡Imagen subida!</h1><p>Se guardó como: ${req.file.filename}</p><a href="/personajes">Volver</a>`);
-});
-
+// --- RUTAS ---
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/personajes', (req, res) => res.sendFile(path.join(__dirname, 'personajes.html')));
 
-app.listen(PORT, () => console.log(`🚀 Servidor con subida de fotos listo`));
-
-let usuarios = [];
-
-// --- 2. RUTAS ---
-
-// Página principal
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// RUTA PARA RECIBIR LA FOTO
+app.post('/subir-personaje', upload.single('foto'), (req, res) => {
+    if (!req.file) return res.send("No se seleccionó ninguna imagen.");
+    res.send(`
+        <div style="text-align:center; font-family:sans-serif; padding:50px;">
+            <h1>💖 ¡Imagen subida con éxito!</h1>
+            <p>Tu personaje ya está en el servidor.</p>
+            <a href="/personajes" style="background:#ffb7c5; padding:10px; color:white; text-decoration:none; border-radius:10px;">Volver a la galería</a>
+        </div>
+    `);
 });
 
-// Login y Registro
-app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
-app.get('/registro', (req, res) => res.sendFile(path.join(__dirname, 'registro.html')));
-
-// --- 3. LÓGICA ---
-
-app.post('/auth/register', (req, res) => {
-    usuarios.push({ email: req.body.email, password: req.body.password });
-    res.send('<h1>Registro OK</h1><a href="/login">Ir al Login</a>');
-});
-
-app.post('/auth/login', (req, res) => {
-    const user = usuarios.find(u => u.email === req.body.email && u.password === req.body.password);
-    if (user) {
-        req.session.usuarioLogueado = user.email;
-        res.redirect('/');
-    } else {
-        res.send('Datos incorrectos. <a href="/login">Volver</a>');
-    }
-});
-
-app.post('/books/upload-text', (req, res) => {
-    const { title } = req.body;
-    res.send(`<div style="text-align:center;"><h1>🎉 ¡"${title}" publicado!</h1><a href="/">Volver</a></div>`);
-});
-
-// --- 4. ENCENDER ---
-app.listen(PORT, () => {
-    console.log(`🚀 Web de Rubyx32 ONLINE en puerto ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Web lista con subida de archivos`));
