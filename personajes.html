@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog de Personajes - Hojitas de Té</title>
+    <style>
+        :root {
+            --pink: #ffb7c5;
+            --dark-pink: #ff85a1;
+            --soft-blue: #e0f2f1;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff9fa;
+            margin: 0;
+            padding: 0;
+        }
+        nav {
+            background: var(--pink);
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+        }
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-bottom: 5px solid var(--pink);
+        }
+        h1 { color: var(--dark-pink); margin: 0; }
+        
+        .blog-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+        .post-personaje {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+        .post-personaje img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+        }
+        .post-content {
+            padding: 20px;
+        }
+        .post-content h2 {
+            margin: 0 0 10px 0;
+            color: var(--dark-pink);
+        }
+        .post-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+        .tag {
+            display: inline-block;
+            background: var(--soft-blue);
+            color: #00796b;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">🏠 Inicio</a>
+    <a href="/personajes">✨ Personajes</a>
+</nav>
+
+<header>
+    <h1>✨ Galería de Personajes ✨</h1>
+    <p>Conoce a los protagonistas de nuestra historia</p>
+</header>
+
+<section style="background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 600px; border: 2px dashed #ffb7c5; text-align: center;">
+    <h3>📤 Subir Nuevo Personaje</h3>
+    <form action="/subir-personaje" method="POST" enctype="multipart/form-data">
+        <input type="file" name="foto" accept="image/*" required style="margin-bottom: 10px;">
+        <br>
+        <button type="submit" style="background: #ff85a1; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;">
+            Publicar en el Blog
+        </button>
+    </form>
+</section>
+
+<div class="blog-container">
+    <article class="post-personaje">
+        <img src="https://via.placeholder.com/400x500?text=Imagen+Personaje+1" alt="Nombre 1">
+        <div class="post-content">
+            <span class="tag">Protagonista</span>
+            <h2>Nombre del Personaje</h2>
+            <p>Aquí puedes escribir la historia de tu personaje, su personalidad o sus secretos. ¡Ideal para que tus lectores lo conozcan mejor!</p>
+        </div>
+    </article>
+
+    <article class="post-personaje">
+        <img src="https://via.placeholder.com/400x500?text=Imagen+Personaje+2" alt="Nombre 2">
+        <div class="post-content">
+            <span class="tag">Antagonista</span>
+            <h2>Nombre del Personaje</h2>
+            <p>Describe aquí a este personaje. Puedes añadir detalles como su edad, su comida favorita o su papel en la trama.</p>
+        </div>
+    </article>
+</div>
+
+</body>
+</html>
