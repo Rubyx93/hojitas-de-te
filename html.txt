@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>BookCloud ✨ Galería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #ffeef8; font-family: 'Quicksand', sans-serif; }
+        .navbar { background-color: #ffc1e3 !important; border-bottom: 4px solid #ff99cc; }
+        
+        /* Contenedor de la Galería */
+        .book-card {
+            background: white;
+            border: 3px solid #ffc1e3;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(255, 153, 204, 0.1);
+        }
+        .book-card:hover { transform: translateY(-10px); }
+        .book-img { width: 100%; height: 250px; object-fit: cover; }
+        .book-body { padding: 15px; text-align: center; }
+        .book-title { color: #ff66aa; font-weight: 700; font-size: 1.2rem; }
+
+        /* EL BOTÓN DE SUBIR (El que enlaza de verdad) */
+        .btn-subir-grande {
+            background-color: #ff99cc;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 153, 204, 0.4);
+        }
+        .btn-subir-grande:hover {
+            background-color: #ff66aa;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark mb-5">
+        <div class="container justify-content-center">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <span style="font-size: 1.8rem; margin-right: 10px;">🌸</span>
+                <strong>BookCloud ✨</strong>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container text-center">
+        <div class="mb-5">
+            <a href="/publicar" class="btn-subir-grande">💖 Subir nuevo libro 💖</a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="book-card">
+                    <img src="https://picsum.photos/seed/1/400/500" class="book-img">
+                    <div class="book-body">
+                        <div class="book-title">Mi Primer Libro</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+    </div>
+
+</body>
+</html>

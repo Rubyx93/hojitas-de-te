@@ -1,0 +1,12 @@
+const fs = require('fs'); // Añade esto al principio de tu server.js
+
+app.post('/books/upload-text', (req, res) => {
+    const { title, content } = req.body;
+    const fileName = `libros/${title}.txt`; // Se guardará como titulo.txt
+
+    // Guardamos el contenido en el archivo
+    fs.writeFile(fileName, content, (err) => {
+        if (err) return res.send("Error al guardar");
+        res.send("¡Libro guardado en el servidor como archivo de texto!");
+    });
+});
